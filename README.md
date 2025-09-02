@@ -4,7 +4,10 @@
   Este proyecto es un servidor WebSocket seguro (WSS) desarrollado en PHP. Su objetivo principal es gestionar múltiples conexiones de clientes de forma asincrónica y no bloqueante. El servidor actúa como un intermediario entre los clientes y una API REST, ofreciendo dos funcionalidades clave:Peticiones Únicas: Los clientes pueden solicitar una llamada a la API que se procesa de forma asincrónica.Tareas Programadas: Los clientes pueden programar peticiones recurrentes a la API en intervalos definidos, lo cual es ideal para el monitoreo o la actualización de datos periódica.El servidor utiliza stream_select para manejar de forma eficiente las conexiones de sockets y cURL multi para las peticiones HTTP concurrentes, garantizando un alto rendimiento. También gestiona la persistencia de las tareas programadas en un archivo JSON, lo que permite que el estado del servidor se mantenga incluso después de un reinicio.
   
   
-📂 Estructura del ProyectoLa organización del código sigue un estándar claro, separando la lógica de la aplicación de los archivos de configuración y otros recursos./tu-proyecto/
+📂 Estructura del Proyecto
+
+
+La organización del código sigue un estándar claro, separando la lógica de la aplicación de los archivos de configuración y otros recursos./tu-proyecto/
 ├── /config/
 │   └── config.ini          # Archivo de configuración del servidor y la API
 ├── /log/
@@ -21,6 +24,7 @@
 
 
 ⚙️ RequisitosAsegúrate de tener instalado lo siguiente:
+
     PHP 7.4+: Con las extensiones sockets y curl habilitadas.
     OpenSSL: Necesario para generar los certificados SSL/TLS y manejar las conexiones seguras (WSS).Generar Certificados SSL/TLS
     Para que el servidor funcione con el protocolo wss://, necesitas un par de archivos de certificado y clave. Para entornos de desarrollo, puedes usar OpenSSL para generar certificados autofirmados:# 1. Genera una clave privada de 2048 bits
@@ -30,7 +34,9 @@ openssl genrsa -out private_key.key 2048
 openssl req -new -x509 -key private_key.key -out certificate.pem -days 365
 Estos archivos (certificate.pem y private_key.key) deben colocarse en el directorio raíz de tu proyecto.
 
-🚀 Instalación y Uso1. Clonar el Repositoriogit clone [https://github.com/tu-usuario/tu-repositorio.git](https://github.com/tu-usuario/tu-repositorio.git)
+🚀 Instalación y Uso
+
+1. Clonar el Repositoriogit clone [https://github.com/tu-usuario/tu-repositorio.git](https://github.com/tu-usuario/tu-repositorio.git)
 cd tu-repositorio
 2. Configurar el ServidorEdita el archivo de configuración config/config.ini para que coincida con tu entorno:[server]
 host = "0.0.0.0"
@@ -47,7 +53,11 @@ log_file = "server_errors.log"
 
 [tasks]
 tasks_file = "scheduled_tasks.json"
-⚠️ ¡No olvides cambiar valid_token por un valor seguro y único!3. Ejecutar el ServidorUna vez que la configuración esté lista, inicia el servidor desde la terminal:php public/server.php
+
+⚠️ ¡No olvides cambiar valid_token por un valor seguro y único!
+
+
+3. Ejecutar el ServidorUna vez que la configuración esté lista, inicia el servidor desde la terminal:php public/server.php
 Verás un mensaje de confirmación que indica que el servidor está escuchando en el puerto configurado.🤝 Conexión y Comunicación del ClienteLos clientes deben conectarse al servidor utilizando el protocolo WSS.AutenticaciónEl servidor requiere que los clientes incluyan un token de autenticación en la cabecera Sec-WebSocket-Protocol durante el handshake inicial. Este valor debe coincidir con valid_token del archivo config.ini.Formato de MensajeLos mensajes enviados desde el cliente al servidor deben ser objetos JSON con la siguiente estructura:CampoTipoDescripciónObligatoriopathstringLa ruta de la API (ej. /users/123).✅methodstringEl método HTTP (GET, POST, PUT, DELETE).✅bodyobjectEl cuerpo de la petición. Opcional.❌intervalintegerEl intervalo en segundos para una tarea programada. 0 para una petición única. Opcional.❌Ejemplo de Petición Única (GET){
   "path": "/products/list",
   "method": "GET"
