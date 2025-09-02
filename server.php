@@ -15,7 +15,7 @@ define('DS', DIRECTORY_SEPARATOR);
 
 // Define la ruta base del proyecto
 // __DIR__ se refiere al directorio actual ('public'). '..' sube un nivel.
-define('ROOT_PATH', __DIR__ . DS . '..' . DS);
+define('ROOT_PATH', realpath(dirname(__FILE__)).DS);
 
 // Define la ruta de configuraciones
 define('CONF_PATH', ROOT_PATH . 'config' . DS);
