@@ -1,5 +1,6 @@
-🚀 Servidor WebSocket Asincrónico en PHP📝 
-Descripción del Proyecto
+🚀 Servidor WebSocket Asincrónico en PHP
+
+📝Descripción del Proyecto
   Este proyecto es un servidor WebSocket seguro (WSS) desarrollado en PHP. Su objetivo principal es gestionar múltiples conexiones de clientes de forma asincrónica y no bloqueante. El servidor actúa como un intermediario entre los clientes y una API REST, ofreciendo dos funcionalidades clave:Peticiones Únicas: Los clientes pueden solicitar una llamada a la API que se procesa de forma asincrónica.Tareas Programadas: Los clientes pueden programar peticiones recurrentes a la API en intervalos definidos, lo cual es ideal para el monitoreo o la actualización de datos periódica.El servidor utiliza stream_select para manejar de forma eficiente las conexiones de sockets y cURL multi para las peticiones HTTP concurrentes, garantizando un alto rendimiento. También gestiona la persistencia de las tareas programadas en un archivo JSON, lo que permite que el estado del servidor se mantenga incluso después de un reinicio.
   
   
