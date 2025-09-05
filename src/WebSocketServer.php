@@ -54,7 +54,7 @@ class WebSocketServer
             if (!file_exists($this->sslCertPath) || !file_exists($this->sslKeyPath)) {
                 throw new Exception("Archivos de certificado o clave SSL no encontrados.");
             }
-
+            $transport = 'tlsv1.3';
             $context = stream_context_create([
                 'ssl' => [
                     'local_cert' => $this->sslCertPath,
@@ -62,10 +62,11 @@ class WebSocketServer
                     'verify_peer' => false,
                     'verify_peer_name' => false,
                     'allow_self_signed' => true,
+                    'ssltransport' => $transport,
                 ]
             ]);
 
-            $this->serverSocket = stream_socket_server("tls://" . $this->host . ":" . $this->port, $errno, $errstr, STREAM_SERVER_BIND | STREAM_SERVER_LISTEN, $context);
+            $this->serverSocket = stream_socket_server($transport."://" . $this->host . ":" . $this->port, $errno, $errstr, STREAM_SERVER_BIND | STREAM_SERVER_LISTEN, $context);
             
             if ($this->serverSocket === false) {
                 throw new Exception("Error al crear el socket SSL: {$errstr} ({$errno})");
